@@ -8,7 +8,10 @@
     "build": "tsc",
     "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
     "start:watch": "nodemon",
-    "start:prod": "node dist/index.js"
+    "start:prod": "node dist/index.js",
+    "docker:build": "docker build . --tag nedl",
+    "docker:run": "docker run --detach --publish 8080:8080 --name nedl-demo nedl:latest",
+    "docker:stop": "docker stop nedl-demo && docker rm nedl-demo"
   },
   "author": "Keith Wade <keawade@protonmail.com>",
   "license": "MIT",
