@@ -6,9 +6,15 @@ const PORT = process.env.PORT ?? 8080;
 // Initialize express
 const app = express();
 
-// Set up route GET /
+// Set up route GET / with query param option
 app.get("/", (req, res) => {
-  return res.send("<center><h1>Hello, NeDL!</h1></center>");
+  const subject = req.query.subject || "NeDL";
+  return res.send(`<center><h1>Hello, ${subject}!</h1></center>`);
+});
+
+// Set up route GET /ping
+app.get("/ping", (req, res) => {
+  return res.send(`<center><h1>pong!</h1><center>`);
 });
 
 // Start listening for connections
