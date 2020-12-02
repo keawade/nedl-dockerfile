@@ -1,0 +1,43 @@
+# Base off of specific version of node image from Docker Hub
+FROM node:12.20.0 AS build
+
+# Set our working directory to /app instead of / to help keep our files separate
+# from the container's file system
+WORKDIR /app
+
+# Copy only file required by the dependency install step to avoid reinstalling
+# dependencies for every build
+COPY package*.json ./
+# Perform clean npm dependencies install without modifying the package lock file
+RUN npm ci
+
+# Copy only source files from our context
+COPY tsconfig.json ./
+COPY src src
+# Compile our app from TypeScript to JavaScript
+RUN npm run build
+
+# Remove build files that are not needed at runtime
+RUN rm -rf src tsconfig.json
+# Uninstall dependencies that are not needed at runtime
+RUN npm prune --production
+
+# Print file list for easier debugging and auditing
+RUN find . -path ./node_modules -prune -o -type f
+
+# Start creating a new image based off of a more lightweight node image for production
+FROM node:12.20.0-alpine AS runtime
+
+# Copy all our files from the build image to our runtime image
+COPY --from=build /app /app
+WORKDIR /app
+
+# Print file list for easier debugging and auditing
+RUN find . -path ./node_modules -prune -o -type f
+
+# Set NODE_ENV environment variable so Node will know to run in the more performant
+# production mode
+ENV NODE_ENV=production
+
+# Set the command that will be run on container start
+ENTRYPOINT [ "node", "./dist/index.js" ]

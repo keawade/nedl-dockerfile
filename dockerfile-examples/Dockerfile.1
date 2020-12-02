@@ -1,0 +1,23 @@
+# Base off of specific version of node image from Docker Hub
+FROM node:12.20.0
+
+# Set our working directory to /app instead of / to help keep our files separate
+# from the container's file system
+WORKDIR /app
+
+# Copy only file required by the dependency install step to avoid reinstalling
+# dependencies for every build
+COPY package*.json ./
+# Perform clean npm dependencies install without modifying the package lock file
+RUN npm ci
+
+# Copy all files from our context
+COPY . .
+# Compile our app from TypeScript to JavaScript
+RUN npm run build
+
+# Print file list for easier debugging and auditing
+RUN find . -path ./node_modules -prune -o -type f
+
+# Set the command that will be run on container start
+ENTRYPOINT [ "node", "./dist/index.js" ]
