@@ -12,9 +12,11 @@ app.get("/", (req, res) => {
   return res.send(`<center><h1>Hello, ${subject}!</h1></center>`);
 });
 
-// Set up route GET /ping
-app.get("/ping", (req, res) => {
-  return res.send(`<center><h1>pong!</h1><center>`);
+let count = 0;
+// Set up route GET /count
+app.get("/count", (req, res) => {
+  count++;
+  return res.send(`<center><h1>Count: ${count}</h1><center>`);
 });
 
 // Start listening for connections
