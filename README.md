@@ -49,6 +49,21 @@ docker stop nedl-demo && docker rm nedl-demo
 - `nedl-demo`: Reference to container. In this case, the name we provided to `docker run`.
 - `docker rm`: [Remove one or more containers.](https://docs.docker.com/engine/reference/commandline/rm/)
 
+### `docker:shell`
+
+Open a shell in a running container.
+
+```bash
+docker exec --interactive --tty nedl-demo sh
+```
+
+- `docker exec`: [Run a command in a running container.](https://docs.docker.com/engine/reference/commandline/exec/)
+- `--interactive`: Keep STDIN open even if not attached
+- `--tty`: Allocate a psuedo-TTY
+- `nedl-demo`: Reference to container. In this case, the name we provided to `docker run`.
+- `sh`: Command we are running. In this case, the simple shell program `sh`. Note: The command must
+  exist in the container to be run.
+
 ### Stop and remove all running containers
 
 ```bash

@@ -11,7 +11,8 @@
     "start:prod": "node dist/index.js",
     "docker:build": "docker build . --tag nedl",
     "docker:run": "docker run --detach --publish 8080:8080 --name nedl-demo nedl:latest",
-    "docker:stop": "docker stop nedl-demo && docker rm nedl-demo"
+    "docker:stop": "docker stop nedl-demo && docker rm nedl-demo",
+    "docker:shell": "docker exec --interactive --tty nedl-demo sh"
   },
   "author": "Keith Wade <keawade@protonmail.com>",
   "license": "MIT",
